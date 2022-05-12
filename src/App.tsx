@@ -1,23 +1,30 @@
-import { registerRootComponent } from 'expo';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { registerRootComponent } from "expo";
+import CounterScreenWrapper from "./ui/screen/counter/CounterScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import CounterViewModel from "./ui/screen/counter/CounterViewModel";
+import React from "react";
+import { Provider } from "mobx-react";
+
+const Stack = createStackNavigator();
+
+const counterViewModel = new CounterViewModel();
 
 function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!!!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <Provider counterViewModel={counterViewModel}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="CounterScreen">
+            <Stack.Screen
+              name="CounterScreen"
+              component={CounterScreenWrapper}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default registerRootComponent(App);
