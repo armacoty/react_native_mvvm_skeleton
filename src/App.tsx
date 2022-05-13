@@ -4,16 +4,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import CounterViewModel from "./ui/screen/counter/CounterViewModel";
 import React from "react";
-import { Provider } from "mobx-react";
+import { provider } from "react-ioc";
 
 const Stack = createStackNavigator();
 
-const counterViewModel = new CounterViewModel();
-
-function App() {
-  return (
-    <>
-      <Provider counterViewModel={counterViewModel}>
+@provider(CounterViewModel)
+class App extends React.Component {
+  render() {
+    return (
+      <>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="CounterScreen">
             <Stack.Screen
@@ -22,9 +21,9 @@ function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </Provider>
-    </>
-  );
+      </>
+    );
+  }
 }
 
-export default registerRootComponent(App);
+export default registerRootComponent(() => (<App/>));

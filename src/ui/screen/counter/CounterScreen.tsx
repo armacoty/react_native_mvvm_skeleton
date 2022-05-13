@@ -1,23 +1,27 @@
-import { inject, observer } from "mobx-react";
+import React from "react";
+import { inject } from "react-ioc";
+import { observer } from "mobx-react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import CounterViewModel from "./CounterViewModel";
 
-interface CounterScreenProps {
-  counterViewModel: CounterViewModel;
-}
+@observer
+class CounterScreen extends React.Component {
+  @inject(CounterViewModel)
+  counterViewModel!: CounterViewModel;
 
-function CounterScreen(props: CounterScreenProps) {
-  return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.column}>
-          <Text>Counter:</Text>
-          <Text>{props.counterViewModel.count}</Text>
-          <Button title="Add" onPress={props.counterViewModel.increment} />
+  render() {
+    return (
+      <>
+        <View style={styles.container}>
+          <View style={styles.column}>
+            <Text>Counter:</Text>
+            <Text>{this.counterViewModel.count}</Text>
+            <Button title="Add" onPress={this.counterViewModel.increment} />
+          </View>
         </View>
-      </View>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -33,4 +37,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default inject("counterViewModel")(observer(CounterScreen));
+export default CounterScreen;
